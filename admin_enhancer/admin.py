@@ -30,13 +30,13 @@ class EnhancedAdminMixin(object):
         """Sets is_popup context variable to hide admin header."""
         if not extra_context:
             extra_context = {}
-        extra_context['is_popup'] = request.REQUEST.get('_popup', 0)
+        extra_context['is_popup'] = request.POST.get('_popup', 0)
         return super(EnhancedAdminMixin, self).delete_view(request, object_id, extra_context)
 
 
 class EnhancedModelAdminMixin(EnhancedAdminMixin):
     def response_change(self, request, obj):
-        if '_popup' in request.REQUEST:
+        if '_popup' in request.POST:
             return render_to_response(
                 'admin_enhancer/dismiss-change-related-popup.html', {'obj': obj}
             )
@@ -45,7 +45,7 @@ class EnhancedModelAdminMixin(EnhancedAdminMixin):
 
     def delete_view(self, request, object_id, extra_context=None):
         delete_view_response = super(EnhancedModelAdminMixin, self).delete_view(request, object_id, extra_context)
-        if (request.POST and '_popup' in request.REQUEST and
+        if ('_popup' in request.POST and
                 isinstance(delete_view_response, HttpResponseRedirect)):
             return render_to_response(
                 'admin_enhancer/dismiss-delete-related-popup.html', {'object_id': object_id}

@@ -42,5 +42,5 @@ setup(
     include_package_data=True,
     keywords=['django admin foreign'],
     packages=find_packages(exclude=['tests', 'tests.*']),
-    install_requires=['django>=1.4,<1.8'],
+    install_requires=['django>=1.4,<1.10'],
 )
